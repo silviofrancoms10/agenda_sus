@@ -20,7 +20,6 @@ class _CadastrarState extends State<Cadastrar> {
   late ReactionDisposer reactionDisposer;
   final _formKey = GlobalKey<FormState>();
 
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -219,6 +218,20 @@ class _CadastrarState extends State<Cadastrar> {
               ),
               const SizedBox(height: 16),
               CampoTexto(
+                labelText: 'Confirma E-mail',
+                hintText: 'ex: joao@gmail.com',
+                onChanged: controller.setConfirmaEmail,
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Insira seu e-mail';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
+              CampoTexto(
                 labelText: 'Telefone',
                 onChanged: controller.setTelefone,
                 keyboardType: TextInputType.phone,
@@ -265,9 +278,9 @@ class _CadastrarState extends State<Cadastrar> {
                           (_) => CampoTexto(
                             labelText: 'Rua',
                             hintText: 'ex: Av. Brasil',
-                            onChanged: controller.rua,
+                            controller: controller.ruaController,
                             enabled: false,
-                            textInputAction: TextInputAction.next ,
+                            textInputAction: TextInputAction.next,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Insira a Rua / logradouro';
@@ -282,7 +295,7 @@ class _CadastrarState extends State<Cadastrar> {
                     flex: 1,
                     child: CampoTexto(
                       labelText: 'Nº',
-                      onChanged: controller.setNumero, // Jamilton, sei que set não tem o propósito de pegar o valor
+                      onChanged: controller.setNumero,
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.next,
                     ),
@@ -300,7 +313,7 @@ class _CadastrarState extends State<Cadastrar> {
                 builder:
                     (_) => CampoTexto(
                       labelText: 'Bairro',
-                      onChanged: controller.setBairro,
+                      controller: controller.bairroController,
                       enabled: false,
                       textInputAction: TextInputAction.next,
                       validator: (value) {
@@ -320,7 +333,7 @@ class _CadastrarState extends State<Cadastrar> {
                       builder:
                           (_) => CampoTexto(
                             labelText: 'Cidade',
-                            onChanged: controller.setCidade,
+                            controller: controller.cidadeController,
                             enabled: false,
                             textInputAction: TextInputAction.next,
                             validator: (value) {
@@ -339,7 +352,7 @@ class _CadastrarState extends State<Cadastrar> {
                       builder:
                           (_) => CampoTexto(
                             labelText: 'UF',
-                            onChanged: controller.setUF,
+                            controller: controller.ufController,
                             enabled: false,
                             textInputAction: TextInputAction.next,
                             validator: (value) {

@@ -16,6 +16,34 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
       (_$CEPValidadoComputed ??= Computed<bool>(() => super.CEPValidado,
               name: '_ControllerCadastrar.CEPValidado'))
           .value;
+  Computed<TextEditingController>? _$ruaControllerComputed;
+
+  @override
+  TextEditingController get ruaController => (_$ruaControllerComputed ??=
+          Computed<TextEditingController>(() => super.ruaController,
+              name: '_ControllerCadastrar.ruaController'))
+      .value;
+  Computed<TextEditingController>? _$bairroControllerComputed;
+
+  @override
+  TextEditingController get bairroController => (_$bairroControllerComputed ??=
+          Computed<TextEditingController>(() => super.bairroController,
+              name: '_ControllerCadastrar.bairroController'))
+      .value;
+  Computed<TextEditingController>? _$cidadeControllerComputed;
+
+  @override
+  TextEditingController get cidadeController => (_$cidadeControllerComputed ??=
+          Computed<TextEditingController>(() => super.cidadeController,
+              name: '_ControllerCadastrar.cidadeController'))
+      .value;
+  Computed<TextEditingController>? _$ufControllerComputed;
+
+  @override
+  TextEditingController get ufController => (_$ufControllerComputed ??=
+          Computed<TextEditingController>(() => super.ufController,
+              name: '_ControllerCadastrar.ufController'))
+      .value;
 
   late final _$nomeAtom =
       Atom(name: '_ControllerCadastrar.nome', context: context);
@@ -110,6 +138,22 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   set email(String value) {
     _$emailAtom.reportWrite(value, super.email, () {
       super.email = value;
+    });
+  }
+
+  late final _$confirmaEmailAtom =
+      Atom(name: '_ControllerCadastrar.confirmaEmail', context: context);
+
+  @override
+  String get confirmaEmail {
+    _$confirmaEmailAtom.reportRead();
+    return super.confirmaEmail;
+  }
+
+  @override
+  set confirmaEmail(String value) {
+    _$confirmaEmailAtom.reportWrite(value, super.confirmaEmail, () {
+      super.confirmaEmail = value;
     });
   }
 
@@ -318,6 +362,17 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   @override
+  void setConfirmaEmail(dynamic value) {
+    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
+        name: '_ControllerCadastrar.setConfirmaEmail');
+    try {
+      return super.setConfirmaEmail(value);
+    } finally {
+      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setTelefone(dynamic value) {
     final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
         name: '_ControllerCadastrar.setTelefone');
@@ -414,6 +469,7 @@ cns: ${cns},
 dataNascimento: ${dataNascimento},
 genero: ${genero},
 email: ${email},
+confirmaEmail: ${confirmaEmail},
 telefone: ${telefone},
 cep: ${cep},
 rua: ${rua},
@@ -422,7 +478,11 @@ complemento: ${complemento},
 bairro: ${bairro},
 cidade: ${cidade},
 uf: ${uf},
-CEPValidado: ${CEPValidado}
+CEPValidado: ${CEPValidado},
+ruaController: ${ruaController},
+bairroController: ${bairroController},
+cidadeController: ${cidadeController},
+ufController: ${ufController}
     ''';
   }
 }

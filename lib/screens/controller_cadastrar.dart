@@ -1,4 +1,5 @@
 import 'package:agenda_sus/screens/api_cep.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mobx/mobx.dart';
 part 'controller_cadastrar.g.dart';
 
@@ -22,6 +23,9 @@ abstract class _ControllerCadastrar with Store {
 
   @observable
   String email = "";
+
+  @observable
+  String confirmaEmail = "";
 
   @observable
   String telefone = "";
@@ -50,6 +54,20 @@ abstract class _ControllerCadastrar with Store {
   @computed
   bool get CEPValidado => cep.length == 10 ? true : false;
 
+  @computed
+  TextEditingController get ruaController => TextEditingController(text: rua);
+
+  @computed
+  TextEditingController get bairroController =>
+      TextEditingController(text: bairro);
+
+  @computed
+  TextEditingController get cidadeController =>
+      TextEditingController(text: cidade);
+
+  @computed
+  TextEditingController get ufController => TextEditingController(text: uf);
+
   @action
   void setNome(value) => nome = value;
 
@@ -67,6 +85,9 @@ abstract class _ControllerCadastrar with Store {
 
   @action
   void setEmail(value) => email = value;
+
+  @action
+  void setConfirmaEmail(value) => confirmaEmail = value;
 
   @action
   void setTelefone(value) => telefone = value;
@@ -107,7 +128,6 @@ abstract class _ControllerCadastrar with Store {
           setCidade(endereco.localidade);
           setUF(endereco.uf);
         });
-
       } catch (e) {
         print("Erro ao buscar CEP: $e");
       }
