@@ -9,6 +9,20 @@ part of 'controller_cadastrar.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
+  Computed<bool>? _$SenhasIguaisComputed;
+
+  @override
+  bool get SenhasIguais =>
+      (_$SenhasIguaisComputed ??= Computed<bool>(() => super.SenhasIguais,
+              name: '_ControllerCadastrar.SenhasIguais'))
+          .value;
+  Computed<bool>? _$emailsConferemComputed;
+
+  @override
+  bool get emailsConferem =>
+      (_$emailsConferemComputed ??= Computed<bool>(() => super.emailsConferem,
+              name: '_ControllerCadastrar.emailsConferem'))
+          .value;
   Computed<bool>? _$CEPValidadoComputed;
 
   @override
@@ -43,6 +57,20 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   TextEditingController get ufController => (_$ufControllerComputed ??=
           Computed<TextEditingController>(() => super.ufController,
               name: '_ControllerCadastrar.ufController'))
+      .value;
+  Computed<bool>? _$lgpdConfirmadoComputed;
+
+  @override
+  bool get lgpdConfirmado =>
+      (_$lgpdConfirmadoComputed ??= Computed<bool>(() => super.lgpdConfirmado,
+              name: '_ControllerCadastrar.lgpdConfirmado'))
+          .value;
+  Computed<bool>? _$comunicacaoConfirmadaComputed;
+
+  @override
+  bool get comunicacaoConfirmada => (_$comunicacaoConfirmadaComputed ??=
+          Computed<bool>(() => super.comunicacaoConfirmada,
+              name: '_ControllerCadastrar.comunicacaoConfirmada'))
       .value;
 
   late final _$nomeAtom =
@@ -90,6 +118,38 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   set cns(String value) {
     _$cnsAtom.reportWrite(value, super.cns, () {
       super.cns = value;
+    });
+  }
+
+  late final _$senhaAtom =
+      Atom(name: '_ControllerCadastrar.senha', context: context);
+
+  @override
+  String get senha {
+    _$senhaAtom.reportRead();
+    return super.senha;
+  }
+
+  @override
+  set senha(String value) {
+    _$senhaAtom.reportWrite(value, super.senha, () {
+      super.senha = value;
+    });
+  }
+
+  late final _$confirmaSenhaAtom =
+      Atom(name: '_ControllerCadastrar.confirmaSenha', context: context);
+
+  @override
+  String get confirmaSenha {
+    _$confirmaSenhaAtom.reportRead();
+    return super.confirmaSenha;
+  }
+
+  @override
+  set confirmaSenha(String value) {
+    _$confirmaSenhaAtom.reportWrite(value, super.confirmaSenha, () {
+      super.confirmaSenha = value;
     });
   }
 
@@ -284,6 +344,38 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
     });
   }
 
+  late final _$lgpdAtom =
+      Atom(name: '_ControllerCadastrar.lgpd', context: context);
+
+  @override
+  bool get lgpd {
+    _$lgpdAtom.reportRead();
+    return super.lgpd;
+  }
+
+  @override
+  set lgpd(bool value) {
+    _$lgpdAtom.reportWrite(value, super.lgpd, () {
+      super.lgpd = value;
+    });
+  }
+
+  late final _$comunicacaoAtom =
+      Atom(name: '_ControllerCadastrar.comunicacao', context: context);
+
+  @override
+  bool get comunicacao {
+    _$comunicacaoAtom.reportRead();
+    return super.comunicacao;
+  }
+
+  @override
+  set comunicacao(bool value) {
+    _$comunicacaoAtom.reportWrite(value, super.comunicacao, () {
+      super.comunicacao = value;
+    });
+  }
+
   late final _$buscarCepAsyncAction =
       AsyncAction('_ControllerCadastrar.buscarCep', context: context);
 
@@ -323,6 +415,28 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
         name: '_ControllerCadastrar.setCNS');
     try {
       return super.setCNS(value);
+    } finally {
+      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setSenha(dynamic value) {
+    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
+        name: '_ControllerCadastrar.setSenha');
+    try {
+      return super.setSenha(value);
+    } finally {
+      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setConfirmaSenha(dynamic value) {
+    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
+        name: '_ControllerCadastrar.setConfirmaSenha');
+    try {
+      return super.setConfirmaSenha(value);
     } finally {
       _$_ControllerCadastrarActionController.endAction(_$actionInfo);
     }
@@ -461,11 +575,35 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   @override
+  bool setLGPD() {
+    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
+        name: '_ControllerCadastrar.setLGPD');
+    try {
+      return super.setLGPD();
+    } finally {
+      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  bool setComunicacao() {
+    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
+        name: '_ControllerCadastrar.setComunicacao');
+    try {
+      return super.setComunicacao();
+    } finally {
+      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 nome: ${nome},
 cpf: ${cpf},
 cns: ${cns},
+senha: ${senha},
+confirmaSenha: ${confirmaSenha},
 dataNascimento: ${dataNascimento},
 genero: ${genero},
 email: ${email},
@@ -478,11 +616,17 @@ complemento: ${complemento},
 bairro: ${bairro},
 cidade: ${cidade},
 uf: ${uf},
+lgpd: ${lgpd},
+comunicacao: ${comunicacao},
+SenhasIguais: ${SenhasIguais},
+emailsConferem: ${emailsConferem},
 CEPValidado: ${CEPValidado},
 ruaController: ${ruaController},
 bairroController: ${bairroController},
 cidadeController: ${cidadeController},
-ufController: ${ufController}
+ufController: ${ufController},
+lgpdConfirmado: ${lgpdConfirmado},
+comunicacaoConfirmada: ${comunicacaoConfirmada}
     ''';
   }
 }

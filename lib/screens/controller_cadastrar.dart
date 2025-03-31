@@ -12,8 +12,18 @@ abstract class _ControllerCadastrar with Store {
   @observable
   String cpf = "";
 
+  String get cpfSemMascara => cpf.replaceAll(RegExp(r'[^0-9]'), '');
+
   @observable
   String cns = "";
+
+  String get cnsSemMascara => cns.replaceAll(RegExp(r'[^0-9]'), '');
+
+  @observable
+  String senha = "";
+
+  @observable
+  String confirmaSenha = "";
 
   @observable
   String dataNascimento = "";
@@ -30,8 +40,12 @@ abstract class _ControllerCadastrar with Store {
   @observable
   String telefone = "";
 
+  String get telefoneSemMascara => telefone.replaceAll(RegExp(r'[^0-9]'), '');
+
   @observable
   String cep = "";
+
+  String get cepSemMascara => cep.replaceAll(RegExp(r'[^0-9]'), '');
 
   @observable
   String rua = "";
@@ -51,8 +65,20 @@ abstract class _ControllerCadastrar with Store {
   @observable
   String uf = "";
 
+  @observable
+  bool lgpd = false;
+
+  @observable
+  bool comunicacao = false;
+
   @computed
-  bool get CEPValidado => cep.length == 10 ? true : false;
+  bool get SenhasIguais => senha == confirmaSenha ? true : false;
+
+  @computed
+  bool get emailsConferem => email == confirmaEmail;
+
+  @computed
+  bool get CEPValidado => cepSemMascara.length > 7 ? true : false;
 
   @computed
   TextEditingController get ruaController => TextEditingController(text: rua);
@@ -68,6 +94,12 @@ abstract class _ControllerCadastrar with Store {
   @computed
   TextEditingController get ufController => TextEditingController(text: uf);
 
+  @computed
+  bool get lgpdConfirmado => lgpd;
+
+  @computed
+  bool get comunicacaoConfirmada => comunicacao;
+
   @action
   void setNome(value) => nome = value;
 
@@ -76,6 +108,12 @@ abstract class _ControllerCadastrar with Store {
 
   @action
   void setCNS(value) => cns = value;
+
+  @action
+  void setSenha(value) => senha = value;
+
+  @action
+  void setConfirmaSenha(value) => confirmaSenha = value;
 
   @action
   void setDataNascimento(value) => dataNascimento = value;
@@ -114,11 +152,17 @@ abstract class _ControllerCadastrar with Store {
   void setUF(value) => uf = value;
 
   @action
+  bool setLGPD() => lgpd = !lgpd;
+
+  @action
+  bool setComunicacao() => comunicacao = !comunicacao;
+
+  @action
   Future<void> buscarCep() async {
     if (CEPValidado) {
       try {
         final ApiCep apiCep = ApiCep();
-        final endereco = await apiCep.buscarCep(cep);
+        final endereco = await apiCep.buscarCep(cepSemMascara);
 
         print("Entrou na busca do CEP");
 

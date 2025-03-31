@@ -19,11 +19,21 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(backgroundColor: vistaBlue, body: Login()),
+      home: Login(),
       title: 'Agenda SUS',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: marianBlue,
+          primary: marianBlue,
+          secondary: trueBlue,
+          surface: whiteSmoke,
+          onPrimary: Colors.white,
+          onSecondary: whiteSmoke,
+          onSurface: jetBlack,    
+          ),
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        scaffoldBackgroundColor: vistaBlue
       ),
     );
   }
