@@ -1,9 +1,13 @@
+import 'package:agenda_sus/screens/controller_login.dart';
+import 'package:agenda_sus/screens/principal.dart';
+import 'package:agenda_sus/utils/termos_uso.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:agenda_sus/screens/cadastrar.dart';
 import 'package:agenda_sus/utils/campo_texto.dart';
 import 'package:agenda_sus/utils/colors.dart';
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -13,214 +17,231 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final _loginController = TextEditingController();
-  final _senhaController = TextEditingController();
-  bool _isCpf = true;
+  ControllerLogin loginController = ControllerLogin();
 
   @override
   void dispose() {
-    _loginController.dispose();
-    _senhaController.dispose();
     super.dispose();
-  }
-
-  TextInputFormatter _getFormatter(String text) {
-    final cleanText = text.replaceAll(RegExp(r'[^0-9]'), '');
-    return cleanText.length <= 11 ? CpfInputFormatter() : CNSInputFormatter();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: vistaBlue,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            children: [
-              Image.asset('images/logo_agendasus.png'),
-              // Campo de CPF/CNS dinâmico
-              CampoTexto(
-                hintText: 'CPF ou CNS',
-                labelText:
-                    _isCpf
-                        ? 'CPF - Cadastro de Pessoa Física'
-                        : 'CNS - Cartão Nacional de Saúde',
-                controller: _loginController,
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.next,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  TextInputFormatter.withFunction((oldValue, newValue) {
-                    return _getFormatter(
-                      newValue.text,
-                    ).formatEditUpdate(oldValue, newValue);
-                  }),
-                ],
-                onChanged: (value) {
-                  final cleanValue = value.replaceAll(RegExp(r'[^0-9]'), '');
-                  setState(() {
-                    _isCpf = cleanValue.length <= 11;
-                  });
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              CampoTexto(
-                hintText: 'Senha',
-                labelText: 'Senha',
-                obscureText: true,
-                controller: _senhaController,
-              ),
-
-              const SizedBox(height: 16),
-
-              Row(
+      body: Stack(
+        children: [
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
                 children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _validarERealizarLogin();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        side: BorderSide(color: jetBlack, width: 1),
-                        elevation: 5,
-                        minimumSize: const Size(0, 50),
-                        backgroundColor: marianBlue,
+                  Image.asset('images/logo_agendasus.png'),
+                  // Campo de CPF/CNS dinâmico
+                  CampoTexto(
+                    hintText: 'CPF - Cadastro de Pessoa Física',
+                    labelText: 'CPF - Cadastro de Pessoa Física',
+                    onChanged: loginController.setCpf,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.next,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      CpfInputFormatter(),
+                    ],
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Informe seu CPF para fazer Login';
+                      }
+                      if (loginController.cpfSemMascara.length < 11) {
+                        return 'CPF inválido, deve conter 11 dígitos';
+                      }
+                      return null;
+                    },
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  CampoTexto(
+                    hintText: 'Senha',
+                    labelText: 'Senha',
+                    obscureText: true,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.go,
+                    onChanged: (value) => loginController.setSenha(value),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Informe sua senha para fazer Login';
+                      }
+                      if (value.length < 7) {
+                        return 'Senha inválida, deve conter no mínimo 8 dígitos';
+                      }
+                      return null;
+                    },
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Observer(
+                          builder: (_) {
+                            return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                side: BorderSide(color: jetBlack, width: 1),
+                                elevation: 5,
+                                minimumSize: const Size(0, 50),
+                                backgroundColor: marianBlue,
+                              ),
+                              onPressed:
+                                  loginController.carregando
+                                      ? null
+                                      : () async {
+                                        if (loginController.isValid) {
+                                          await loginController.logar();
+                                          if (loginController.usuarioLogado) {
+                                            Navigator.of(
+                                              context,
+                                            ).pushReplacement(
+                                              MaterialPageRoute(
+                                                builder: (_) => Principal(),
+                                              ),
+                                            );
+                                          }
+                                        } else {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('Dados inválidos'),
+                                            ),
+                                          );
+                                        }
+                                      },
+                              child: Text(
+                                'Entrar',
+                                style: TextStyle(
+                                  color: whiteSmoke,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                      child: Text(
-                        'Entrar',
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed:
+                              loginController.carregando
+                                  ? null
+                                  : () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const Cadastrar(),
+                                      ),
+                                    );
+                                  },
+                          style: ElevatedButton.styleFrom(
+                            side: BorderSide(color: jetBlack, width: 1),
+                            elevation: 5,
+                            minimumSize: const Size(0, 50),
+                            backgroundColor: whiteSmoke,
+                          ),
+                          child: Text(
+                            'Cadastrar',
+                            style: TextStyle(
+                              color: marianBlue,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 32),
+
+                  // Links adicionais
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Esqueceu sua senha?",
                         style: TextStyle(
                           color: whiteSmoke,
-                          fontSize: 20,
                           fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Cadastrar(),
+                      TextButton(
+                        onPressed: loginController.carregando ? null : () {},
+                        child: Text(
+                          "Clique aqui",
+                          style: TextStyle(
+                            color: whiteSmoke,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                            decorationColor: whiteSmoke,
+                            fontSize: 18,
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        side: BorderSide(color: jetBlack, width: 1),
-                        elevation: 5,
-                        minimumSize: const Size(0, 50),
-                        backgroundColor: whiteSmoke,
-                      ),
-                      child: Text(
-                        'Cadastrar',
-                        style: TextStyle(
-                          color: marianBlue,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
 
-              const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-              // Links adicionais
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Esqueceu sua senha?",
-                    style: TextStyle(
-                      color: whiteSmoke,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed:
+                        () => showDialog(
+                          context: context,
+                          builder:
+                              (context) => Dialog(
+                                insetPadding: const EdgeInsets.all(
+                                  20,
+                                ), // Margem ao redor
+                                child: Container(
+                                  constraints: const BoxConstraints(
+                                    maxHeight: 600,
+                                  ), // Altura máxima
+                                  padding: const EdgeInsets.all(20),
+                                  child: SingleChildScrollView(
+                                    child: termosDeUso(context),
+                                  ),
+                                ),
+                              ),
+                        ),
                     child: Text(
-                      "Clique aqui".toUpperCase(),
+                      "Termos de Uso e Políticas de Privacidade",
                       style: TextStyle(
                         color: whiteSmoke,
                         fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        decorationColor: whiteSmoke,
+                        fontSize: 16,
                       ),
+                      textAlign: TextAlign.end,
                     ),
                   ),
                 ],
               ),
-
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  "Termos de Uso e Políticas de Privacidade",
-                  style: TextStyle(
-                    color: whiteSmoke,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.end,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+
+          // Overlay de carregamento
+          Observer(
+            builder: (_) {
+              return loginController.carregando
+                  ? Container(
+                    color: Color.from(alpha: 0.2, red: 0, green: 0, blue: 0),
+                    child: const Center(child: CircularProgressIndicator()),
+                  )
+                  : const SizedBox.shrink();
+            },
+          ),
+        ],
       ),
     );
-  }
-
-  void _validarERealizarLogin() {
-    final login = _loginController.text.replaceAll(RegExp(r'[^0-9]'), '');
-    final senha = _senhaController.text;
-
-    if (login.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, informe seu CPF ou CNS')),
-      );
-      return;
-    }
-
-    if (senha.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor, informe sua senha')),
-      );
-      return;
-    }
-
-    // Validação específica para CPF (11 dígitos)
-    if (login.length == 11 && !CPFValidator.isValid(login)) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('CPF inválido')));
-      return;
-    }
-
-    // Validação específica para CNS (15 dígitos)
-    if (login.length == 15 && !_validarCNS(login)) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('CNS inválido')));
-      return;
-    }
-
-    // Aqui você implementaria a lógica de login real
-    _realizarLogin(login, senha);
-  }
-
-  bool _validarCNS(String cns) {
-    // Implemente a validação real do CNS aqui
-    // Este é um exemplo básico - a validação real do CNS é mais complexa
-    return cns.length == 15;
-  }
-
-  void _realizarLogin(String login, String senha) {
-    // Implemente sua lógica de autenticação aqui
-    print('Tentativa de login com: $login e senha: $senha');
   }
 }

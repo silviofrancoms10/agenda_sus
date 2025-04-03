@@ -80,18 +80,14 @@ abstract class _ControllerCadastrar with Store {
   @computed
   bool get CEPValidado => cepSemMascara.length > 7 ? true : false;
 
-  @computed
   TextEditingController get ruaController => TextEditingController(text: rua);
 
-  @computed
   TextEditingController get bairroController =>
       TextEditingController(text: bairro);
 
-  @computed
   TextEditingController get cidadeController =>
       TextEditingController(text: cidade);
 
-  @computed
   TextEditingController get ufController => TextEditingController(text: uf);
 
   @computed

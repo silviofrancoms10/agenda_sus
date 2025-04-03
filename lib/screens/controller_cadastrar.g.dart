@@ -30,34 +30,6 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
       (_$CEPValidadoComputed ??= Computed<bool>(() => super.CEPValidado,
               name: '_ControllerCadastrar.CEPValidado'))
           .value;
-  Computed<TextEditingController>? _$ruaControllerComputed;
-
-  @override
-  TextEditingController get ruaController => (_$ruaControllerComputed ??=
-          Computed<TextEditingController>(() => super.ruaController,
-              name: '_ControllerCadastrar.ruaController'))
-      .value;
-  Computed<TextEditingController>? _$bairroControllerComputed;
-
-  @override
-  TextEditingController get bairroController => (_$bairroControllerComputed ??=
-          Computed<TextEditingController>(() => super.bairroController,
-              name: '_ControllerCadastrar.bairroController'))
-      .value;
-  Computed<TextEditingController>? _$cidadeControllerComputed;
-
-  @override
-  TextEditingController get cidadeController => (_$cidadeControllerComputed ??=
-          Computed<TextEditingController>(() => super.cidadeController,
-              name: '_ControllerCadastrar.cidadeController'))
-      .value;
-  Computed<TextEditingController>? _$ufControllerComputed;
-
-  @override
-  TextEditingController get ufController => (_$ufControllerComputed ??=
-          Computed<TextEditingController>(() => super.ufController,
-              name: '_ControllerCadastrar.ufController'))
-      .value;
   Computed<bool>? _$lgpdConfirmadoComputed;
 
   @override
@@ -621,10 +593,6 @@ comunicacao: ${comunicacao},
 SenhasIguais: ${SenhasIguais},
 emailsConferem: ${emailsConferem},
 CEPValidado: ${CEPValidado},
-ruaController: ${ruaController},
-bairroController: ${bairroController},
-cidadeController: ${cidadeController},
-ufController: ${ufController},
 lgpdConfirmado: ${lgpdConfirmado},
 comunicacaoConfirmada: ${comunicacaoConfirmada}
     ''';

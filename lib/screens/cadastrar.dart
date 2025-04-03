@@ -1,4 +1,5 @@
 import 'package:agenda_sus/screens/controller_cadastrar.dart';
+import 'package:agenda_sus/utils/termos_uso.dart';
 import 'package:flutter/material.dart';
 import 'package:agenda_sus/utils/campo_texto.dart';
 import 'package:agenda_sus/utils/colors.dart';
@@ -42,7 +43,8 @@ class _CadastrarState extends State<Cadastrar> {
   @override
   void dispose() {
     reactionDisposer();
-
+    reactionDisposer2();
+    reactionDisposer3();
     super.dispose();
   }
 
@@ -561,33 +563,11 @@ class _CadastrarState extends State<Cadastrar> {
       // Se todas as validações passarem
       print('Dados válidos, pronto para enviar!');
 
+      // lógica para mostrar a tela de co
+      Navigator.pop(context);
+
       // Aqui você pode chamar o método para enviar os dados para a API
       // enviarParaAPI();
     }
   }
-}
-
-termosDeUso(context) {
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      const Text(
-        "TERMOS E CONDIÇÕES DE USO E POLÍTICAS DE PRIVACIDADE",
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(height: 20),
-      const Text(
-        "1. Aceitação dos Termos\n\nAo utilizar o Agenda SUS, você concorda com estes termos...\n\n"
-        "2. Uso do Aplicativo\n\nO aplicativo destina-se ao agendamento...\n\n"
-        // Adicione todo o texto dos termos aqui
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-        textAlign: TextAlign.justify,
-      ),
-      const SizedBox(height: 20),
-      ElevatedButton(
-        onPressed: () => Navigator.pop(context),
-        child: const Text("Fechar"),
-      ),
-    ],
-  );
 }
