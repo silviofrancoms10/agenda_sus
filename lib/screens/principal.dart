@@ -1,5 +1,5 @@
 import 'package:agenda_sus/screens/agendar.dart';
-import 'package:agenda_sus/screens/cartao.dart';
+import 'package:agenda_sus/screens/cartao_sus.dart';
 import 'package:agenda_sus/screens/consultas.dart';
 import 'package:agenda_sus/screens/inicio.dart';
 import 'package:agenda_sus/screens/perfil.dart';
@@ -17,13 +17,23 @@ class _PrincipalState extends State<Principal> {
   int _indiceAtual = 0;
 
   @override
-  List<Widget> telas = [Inicio(), Consultas(), Agendar(), Cartao(), Perfil()];
+  List<Widget> telas = [
+    Inicio(),
+    Consultas(),
+    Agendar(),
+    CartaoSUS(
+      nome: "Maria da Silva",
+      numeroCartao: "123 4567 8901 2345",
+      dataNascimento: "15/07/1985",
+      sexo: "Masculino",
+    ),
+    Perfil(),
+  ];
 
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(padding: EdgeInsets.all(16), child: telas[_indiceAtual]),
       bottomNavigationBar: BottomNavigationBar(
-        
         currentIndex: _indiceAtual,
         onTap: (indice) => setState(() => _indiceAtual = indice),
         type: BottomNavigationBarType.fixed,
