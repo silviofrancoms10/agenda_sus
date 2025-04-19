@@ -30,6 +30,7 @@ class _PrincipalState extends State<Principal> {
     Perfil(),
   ];
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(padding: EdgeInsets.all(16), child: telas[_indiceAtual]),
