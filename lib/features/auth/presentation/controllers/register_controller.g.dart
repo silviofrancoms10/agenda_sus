@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'controller_cadastrar.dart';
+part of 'register_controller.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,45 +8,45 @@ part of 'controller_cadastrar.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
+mixin _$RegisterController on _RegisterController, Store {
   Computed<bool>? _$SenhasIguaisComputed;
 
   @override
   bool get SenhasIguais =>
       (_$SenhasIguaisComputed ??= Computed<bool>(() => super.SenhasIguais,
-              name: '_ControllerCadastrar.SenhasIguais'))
+              name: '_RegisterController.SenhasIguais'))
           .value;
   Computed<bool>? _$emailsConferemComputed;
 
   @override
   bool get emailsConferem =>
       (_$emailsConferemComputed ??= Computed<bool>(() => super.emailsConferem,
-              name: '_ControllerCadastrar.emailsConferem'))
+              name: '_RegisterController.emailsConferem'))
           .value;
   Computed<bool>? _$CEPValidadoComputed;
 
   @override
   bool get CEPValidado =>
       (_$CEPValidadoComputed ??= Computed<bool>(() => super.CEPValidado,
-              name: '_ControllerCadastrar.CEPValidado'))
+              name: '_RegisterController.CEPValidado'))
           .value;
   Computed<bool>? _$lgpdConfirmadoComputed;
 
   @override
   bool get lgpdConfirmado =>
       (_$lgpdConfirmadoComputed ??= Computed<bool>(() => super.lgpdConfirmado,
-              name: '_ControllerCadastrar.lgpdConfirmado'))
+              name: '_RegisterController.lgpdConfirmado'))
           .value;
   Computed<bool>? _$comunicacaoConfirmadaComputed;
 
   @override
   bool get comunicacaoConfirmada => (_$comunicacaoConfirmadaComputed ??=
           Computed<bool>(() => super.comunicacaoConfirmada,
-              name: '_ControllerCadastrar.comunicacaoConfirmada'))
+              name: '_RegisterController.comunicacaoConfirmada'))
       .value;
 
   late final _$nomeAtom =
-      Atom(name: '_ControllerCadastrar.nome', context: context);
+      Atom(name: '_RegisterController.nome', context: context);
 
   @override
   String get nome {
@@ -62,7 +62,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$cpfAtom =
-      Atom(name: '_ControllerCadastrar.cpf', context: context);
+      Atom(name: '_RegisterController.cpf', context: context);
 
   @override
   String get cpf {
@@ -78,7 +78,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$cnsAtom =
-      Atom(name: '_ControllerCadastrar.cns', context: context);
+      Atom(name: '_RegisterController.cns', context: context);
 
   @override
   String get cns {
@@ -94,7 +94,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$senhaAtom =
-      Atom(name: '_ControllerCadastrar.senha', context: context);
+      Atom(name: '_RegisterController.senha', context: context);
 
   @override
   String get senha {
@@ -110,7 +110,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$confirmaSenhaAtom =
-      Atom(name: '_ControllerCadastrar.confirmaSenha', context: context);
+      Atom(name: '_RegisterController.confirmaSenha', context: context);
 
   @override
   String get confirmaSenha {
@@ -126,7 +126,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$dataNascimentoAtom =
-      Atom(name: '_ControllerCadastrar.dataNascimento', context: context);
+      Atom(name: '_RegisterController.dataNascimento', context: context);
 
   @override
   String get dataNascimento {
@@ -142,7 +142,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$generoAtom =
-      Atom(name: '_ControllerCadastrar.genero', context: context);
+      Atom(name: '_RegisterController.genero', context: context);
 
   @override
   String get genero {
@@ -158,7 +158,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$emailAtom =
-      Atom(name: '_ControllerCadastrar.email', context: context);
+      Atom(name: '_RegisterController.email', context: context);
 
   @override
   String get email {
@@ -174,7 +174,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$confirmaEmailAtom =
-      Atom(name: '_ControllerCadastrar.confirmaEmail', context: context);
+      Atom(name: '_RegisterController.confirmaEmail', context: context);
 
   @override
   String get confirmaEmail {
@@ -190,7 +190,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$telefoneAtom =
-      Atom(name: '_ControllerCadastrar.telefone', context: context);
+      Atom(name: '_RegisterController.telefone', context: context);
 
   @override
   String get telefone {
@@ -206,7 +206,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$cepAtom =
-      Atom(name: '_ControllerCadastrar.cep', context: context);
+      Atom(name: '_RegisterController.cep', context: context);
 
   @override
   String get cep {
@@ -222,7 +222,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$ruaAtom =
-      Atom(name: '_ControllerCadastrar.rua', context: context);
+      Atom(name: '_RegisterController.rua', context: context);
 
   @override
   String get rua {
@@ -238,7 +238,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$numeroAtom =
-      Atom(name: '_ControllerCadastrar.numero', context: context);
+      Atom(name: '_RegisterController.numero', context: context);
 
   @override
   String get numero {
@@ -254,7 +254,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$complementoAtom =
-      Atom(name: '_ControllerCadastrar.complemento', context: context);
+      Atom(name: '_RegisterController.complemento', context: context);
 
   @override
   String get complemento {
@@ -270,7 +270,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$bairroAtom =
-      Atom(name: '_ControllerCadastrar.bairro', context: context);
+      Atom(name: '_RegisterController.bairro', context: context);
 
   @override
   String get bairro {
@@ -286,7 +286,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$cidadeAtom =
-      Atom(name: '_ControllerCadastrar.cidade', context: context);
+      Atom(name: '_RegisterController.cidade', context: context);
 
   @override
   String get cidade {
@@ -301,7 +301,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
     });
   }
 
-  late final _$ufAtom = Atom(name: '_ControllerCadastrar.uf', context: context);
+  late final _$ufAtom = Atom(name: '_RegisterController.uf', context: context);
 
   @override
   String get uf {
@@ -317,7 +317,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$lgpdAtom =
-      Atom(name: '_ControllerCadastrar.lgpd', context: context);
+      Atom(name: '_RegisterController.lgpd', context: context);
 
   @override
   bool get lgpd {
@@ -333,7 +333,7 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$comunicacaoAtom =
-      Atom(name: '_ControllerCadastrar.comunicacao', context: context);
+      Atom(name: '_RegisterController.comunicacao', context: context);
 
   @override
   bool get comunicacao {
@@ -349,222 +349,230 @@ mixin _$ControllerCadastrar on _ControllerCadastrar, Store {
   }
 
   late final _$buscarCepAsyncAction =
-      AsyncAction('_ControllerCadastrar.buscarCep', context: context);
+      AsyncAction('_RegisterController.buscarCep', context: context);
 
   @override
   Future<void> buscarCep() {
     return _$buscarCepAsyncAction.run(() => super.buscarCep());
   }
 
-  late final _$_ControllerCadastrarActionController =
-      ActionController(name: '_ControllerCadastrar', context: context);
+  late final _$cadastrarUsuarioAsyncAction =
+      AsyncAction('_RegisterController.cadastrarUsuario', context: context);
 
   @override
-  void setNome(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setNome');
+  Future<void> cadastrarUsuario() {
+    return _$cadastrarUsuarioAsyncAction.run(() => super.cadastrarUsuario());
+  }
+
+  late final _$_RegisterControllerActionController =
+      ActionController(name: '_RegisterController', context: context);
+
+  @override
+  void setNome(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setNome');
     try {
       return super.setNome(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setCPF(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setCPF');
+  void setCPF(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setCPF');
     try {
       return super.setCPF(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setCNS(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setCNS');
+  void setCNS(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setCNS');
     try {
       return super.setCNS(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setSenha(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setSenha');
+  void setSenha(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setSenha');
     try {
       return super.setSenha(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setConfirmaSenha(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setConfirmaSenha');
+  void setConfirmaSenha(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setConfirmaSenha');
     try {
       return super.setConfirmaSenha(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setDataNascimento(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setDataNascimento');
+  void setDataNascimento(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setDataNascimento');
     try {
       return super.setDataNascimento(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setGenero(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setGenero');
+  void setGenero(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setGenero');
     try {
       return super.setGenero(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setEmail(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setEmail');
+  void setEmail(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setEmail');
     try {
       return super.setEmail(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setConfirmaEmail(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setConfirmaEmail');
+  void setConfirmaEmail(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setConfirmaEmail');
     try {
       return super.setConfirmaEmail(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setTelefone(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setTelefone');
+  void setTelefone(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setTelefone');
     try {
       return super.setTelefone(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setCEP(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setCEP');
+  void setCEP(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setCEP');
     try {
       return super.setCEP(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setRua(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setRua');
+  void setRua(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setRua');
     try {
       return super.setRua(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setNumero(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setNumero');
+  void setNumero(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setNumero');
     try {
       return super.setNumero(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setComplemento(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setComplemento');
+  void setComplemento(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setComplemento');
     try {
       return super.setComplemento(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setBairro(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setBairro');
+  void setBairro(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setBairro');
     try {
       return super.setBairro(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setCidade(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setCidade');
+  void setCidade(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setCidade');
     try {
       return super.setCidade(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setUF(dynamic value) {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setUF');
+  void setUF(String? value) {
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setUF');
     try {
       return super.setUF(value);
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   bool setLGPD() {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setLGPD');
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setLGPD');
     try {
       return super.setLGPD();
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
   bool setComunicacao() {
-    final _$actionInfo = _$_ControllerCadastrarActionController.startAction(
-        name: '_ControllerCadastrar.setComunicacao');
+    final _$actionInfo = _$_RegisterControllerActionController.startAction(
+        name: '_RegisterController.setComunicacao');
     try {
       return super.setComunicacao();
     } finally {
-      _$_ControllerCadastrarActionController.endAction(_$actionInfo);
+      _$_RegisterControllerActionController.endAction(_$actionInfo);
     }
   }
 

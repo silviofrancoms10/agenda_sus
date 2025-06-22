@@ -1,5 +1,5 @@
-import 'package:agenda_sus/utils/botao_personalizado.dart';
-import 'package:agenda_sus/utils/colors.dart';
+import 'package:agenda_sus/shared/widgets/botao_personalizado.dart';
+import 'package:agenda_sus/shared/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

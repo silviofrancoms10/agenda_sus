@@ -1,40 +1,67 @@
-import 'package:agenda_sus/screens/controller_cadastrar.dart';
-import 'package:agenda_sus/utils/termos_uso.dart';
-import 'package:flutter/material.dart';
-import 'package:agenda_sus/utils/campo_texto.dart';
-import 'package:agenda_sus/utils/colors.dart';
-import 'package:brasil_fields/brasil_fields.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
-// import 'package:provider/provider.dart';
+// lib/features/auth/presentation/pages/register_page.dart
 
-class Cadastrar extends StatefulWidget {
-  const Cadastrar({super.key});
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Para FilteringTextInputFormatter
+import 'package:flutter_mobx/flutter_mobx.dart'; // Para usar Observer
+import 'package:mobx/mobx.dart'; // Para ReactionDisposer
+import 'package:provider/provider.dart'; // Importe o Provider
+
+// Importe suas classes e caminhos atualizados
+import 'package:agenda_sus/features/auth/presentation/controllers/register_controller.dart';
+import 'package:agenda_sus/shared/widgets/campo_texto.dart'; // Caminho atualizado
+import 'package:agenda_sus/shared/utils/colors.dart'; // Caminho atualizado
+import 'package:agenda_sus/shared/utils/termos_uso.dart'; // Caminho atualizado
+import 'package:agenda_sus/core/errors/exceptions.dart'; // Importe suas exceções personalizadas
+
+// Importes do brasil_fields - mantenha-os se ainda estiverem em uso direto aqui
+import 'package:brasil_fields/brasil_fields.dart';
+
+
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<Cadastrar> createState() => _CadastrarState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _CadastrarState extends State<Cadastrar> {
-  ControllerCadastrar controller = ControllerCadastrar();
-  late ReactionDisposer reactionDisposer;
-  late ReactionDisposer reactionDisposer2;
-  late ReactionDisposer reactionDisposer3;
+class _RegisterPageState extends State<RegisterPage> {
+  // O controller será inicializado em didChangeDependencies via Provider
+  late RegisterController controller;
+
+  late ReactionDisposer reactionDisposerCep;
+  late ReactionDisposer reactionDisposerLgpd;
+  late ReactionDisposer reactionDisposerComunicacao;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // controller = Provider.of<Controller>(context);
+    // Obtém a instância do RegisterController que foi fornecida no main.dart
+    controller = Provider.of<RegisterController>(context);
 
-    reactionDisposer = reaction((_) => controller.CEPValidado, (_) {
-      controller.buscarCep();
+    // Reações MobX
+    reactionDisposerCep = reaction((_) => controller.CEPValidado, (_) {
+      // Chama a ação do controller para buscar o CEP
+      // O tratamento de erro ocorre dentro do controller, mas a UI pode mostrar um SnackBar
+      controller.buscarCep().catchError((error) {
+        String errorMessage = 'Erro desconhecido ao buscar CEP.';
+        if (error is AppExceptions) {
+          errorMessage = error.message; // Pega a mensagem da sua exceção customizada
+        } else if (error != null) {
+          errorMessage = error.toString();
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.orange, // Cor para erros relacionados a CEP
+          ),
+        );
+      });
     });
 
-    reactionDisposer2 = reaction((_) => controller.lgpdConfirmado, (_) {});
-    reactionDisposer3 = reaction(
+    reactionDisposerLgpd = reaction((_) => controller.lgpdConfirmado, (_) {});
+    reactionDisposerComunicacao = reaction(
       (_) => controller.comunicacaoConfirmada,
       (_) {},
     );
@@ -42,9 +69,10 @@ class _CadastrarState extends State<Cadastrar> {
 
   @override
   void dispose() {
-    reactionDisposer();
-    reactionDisposer2();
-    reactionDisposer3();
+    // Descarte as reações MobX quando o widget não for mais necessário
+    reactionDisposerCep();
+    reactionDisposerLgpd();
+    reactionDisposerComunicacao();
     super.dispose();
   }
 
@@ -57,7 +85,7 @@ class _CadastrarState extends State<Cadastrar> {
           'Cadastro AgendaSUS',
           style: TextStyle(color: whiteSmoke),
         ),
-        backgroundColor: marianBlue, // Usando a cor do seu tema
+        backgroundColor: marianBlue,
       ),
       backgroundColor: vistaBlue,
       body: SafeArea(
@@ -82,6 +110,7 @@ class _CadastrarState extends State<Cadastrar> {
                   hintText: 'ex: João da Silva Pereira',
                   onChanged: controller.setNome,
                   textInputAction: TextInputAction.next,
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Insira seu nome completo';
@@ -155,7 +184,7 @@ class _CadastrarState extends State<Cadastrar> {
                   textInputAction: TextInputAction.next,
                   validator: (value) {
                     if (value != controller.senha) {
-                      return 'Insira uma senha para acessar o sistema';
+                      return 'As senhas não coincidem';
                     }
                     return null;
                   },
@@ -180,7 +209,7 @@ class _CadastrarState extends State<Cadastrar> {
                             return 'Insira sua data de nascimento';
                           }
                           if (controller.dataNascimento.length < 10) {
-                            return 'Data de Nacimento Incompleta';
+                            return 'Data de Nascimento Incompleta';
                           }
                           return null;
                         },
@@ -215,8 +244,8 @@ class _CadastrarState extends State<Cadastrar> {
                             borderSide: BorderSide(color: marianBlue, width: 2),
                           ),
                         ),
-                        dropdownColor: Colors.white, // Fundo branco do dropdown
-                        isExpanded: true, // Ocupa apenas o tamanho necessário
+                        dropdownColor: Colors.white,
+                        isExpanded: true,
                         onChanged: controller.setGenero,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -224,19 +253,18 @@ class _CadastrarState extends State<Cadastrar> {
                           }
                           return null;
                         },
-                        items:
-                            <String>[
-                              'Masculino',
-                              'Feminino',
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: TextStyle(color: jetBlack),
-                                ),
-                              );
-                            }).toList(),
+                        items: <String>[
+                          'Feminino', // 0 para Feminino
+                          'Masculino', // 1 para Masculino
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(color: jetBlack),
+                            ),
+                          );
+                        }).toList(),
                         style: TextStyle(color: jetBlack),
                         icon: Icon(Icons.arrow_drop_down, color: jetBlack),
                       ),
@@ -275,7 +303,7 @@ class _CadastrarState extends State<Cadastrar> {
                   textInputAction: TextInputAction.next,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Insira seu e-mail';
+                      return 'Confirme seu e-mail';
                     }
                     if (controller.emailsConferem == false) {
                       return 'Os e-mails devem ser iguais';
@@ -319,7 +347,7 @@ class _CadastrarState extends State<Cadastrar> {
                       return 'Insira seu CEP';
                     }
                     if (controller.cepSemMascara.length < 8) {
-                      return 'Insira um CEP válido';
+                      return 'Insira um CEP válido (8 dígitos)';
                     }
                     return null;
                   },
@@ -330,20 +358,19 @@ class _CadastrarState extends State<Cadastrar> {
                     Expanded(
                       flex: 3,
                       child: Observer(
-                        builder:
-                            (_) => CampoTexto(
-                              labelText: 'Rua',
-                              hintText: 'ex: Av. Brasil',
-                              controller: controller.ruaController,
-                              enabled: false,
-                              textInputAction: TextInputAction.next,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Insira a Rua / logradouro';
-                                }
-                                return null;
-                              },
-                            ),
+                        builder: (_) => CampoTexto(
+                          labelText: 'Rua',
+                          hintText: 'ex: Av. Brasil',
+                          controller: controller.ruaController,
+                          enabled: false,
+                          textInputAction: TextInputAction.next,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Insira a Rua / logradouro';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -366,19 +393,18 @@ class _CadastrarState extends State<Cadastrar> {
                 ),
                 const SizedBox(height: 16),
                 Observer(
-                  builder:
-                      (_) => CampoTexto(
-                        labelText: 'Bairro',
-                        controller: controller.bairroController,
-                        enabled: false,
-                        textInputAction: TextInputAction.next,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Insira o bairro';
-                          }
-                          return null;
-                        },
-                      ),
+                  builder: (_) => CampoTexto(
+                    labelText: 'Bairro',
+                    controller: controller.bairroController,
+                    enabled: false,
+                    textInputAction: TextInputAction.next,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Insira o bairro';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Row(
@@ -386,38 +412,36 @@ class _CadastrarState extends State<Cadastrar> {
                     Expanded(
                       flex: 3,
                       child: Observer(
-                        builder:
-                            (_) => CampoTexto(
-                              labelText: 'Cidade',
-                              controller: controller.cidadeController,
-                              enabled: false,
-                              textInputAction: TextInputAction.next,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Insira a cidade';
-                                }
-                                return null;
-                              },
-                            ),
+                        builder: (_) => CampoTexto(
+                          labelText: 'Cidade',
+                          controller: controller.cidadeController,
+                          enabled: false,
+                          textInputAction: TextInputAction.next,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Insira a cidade';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       flex: 1,
                       child: Observer(
-                        builder:
-                            (_) => CampoTexto(
-                              labelText: 'UF',
-                              controller: controller.ufController,
-                              enabled: false,
-                              textInputAction: TextInputAction.next,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Insira o estado';
-                                }
-                                return null;
-                              },
-                            ),
+                        builder: (_) => CampoTexto(
+                          labelText: 'UF',
+                          controller: controller.ufController,
+                          enabled: false,
+                          textInputAction: TextInputAction.next,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Insira o estado (UF)';
+                            }
+                            return null;
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -428,43 +452,35 @@ class _CadastrarState extends State<Cadastrar> {
                     Expanded(
                       flex: 1,
                       child: Observer(
-                        builder:
-                            (_) => Checkbox(
-                              value: controller.lgpd,
-                              onChanged: (_) => controller.setLGPD(),
-                              activeColor: marianBlue,
-                            ),
+                        builder: (_) => Checkbox(
+                          value: controller.lgpd,
+                          onChanged: (_) => controller.setLGPD(),
+                          activeColor: marianBlue,
+                        ),
                       ),
                     ),
                     Expanded(
                       flex: 11,
                       child: GestureDetector(
-                        onTap:
-                            () => showDialog(
-                              context: context,
-                              builder:
-                                  (context) => Dialog(
-                                    insetPadding: const EdgeInsets.all(
-                                      20,
-                                    ), // Margem ao redor
-                                    child: Container(
-                                      constraints: const BoxConstraints(
-                                        maxHeight: 600,
-                                      ), // Altura máxima
-                                      padding: const EdgeInsets.all(20),
-                                      child: SingleChildScrollView(
-                                        child: termosDeUso(context),
-                                      ),
-                                    ),
-                                  ),
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                            insetPadding: const EdgeInsets.all(20),
+                            child: Container(
+                              constraints: const BoxConstraints(maxHeight: 600),
+                              padding: const EdgeInsets.all(20),
+                              child: SingleChildScrollView(
+                                child: termosDeUso(context),
+                              ),
                             ),
+                          ),
+                        ),
                         child: Text.rich(
                           TextSpan(
                             children: [
                               const TextSpan(text: "Li e concordo com os "),
                               TextSpan(
-                                text:
-                                    "Termos de Uso e Políticas de Privacidade",
+                                text: "Termos de Uso e Políticas de Privacidade",
                                 style: TextStyle(
                                   color: whiteSmoke,
                                   fontWeight: FontWeight.bold,
@@ -485,12 +501,11 @@ class _CadastrarState extends State<Cadastrar> {
                     Expanded(
                       flex: 1,
                       child: Observer(
-                        builder:
-                            (_) => Checkbox(
-                              value: controller.comunicacao,
-                              onChanged: (_) => controller.setComunicacao(),
-                              activeColor: marianBlue,
-                            ),
+                        builder: (_) => Checkbox(
+                          value: controller.comunicacao,
+                          onChanged: (_) => controller.setComunicacao(),
+                          activeColor: marianBlue,
+                        ),
                       ),
                     ),
                     Expanded(
@@ -522,8 +537,9 @@ class _CadastrarState extends State<Cadastrar> {
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all(marianBlue),
                         ),
-                        onPressed: () {
-                          testeCadastrar();
+                        onPressed: () async {
+                          // A página agora chama uma ação no controller para submeter o cadastro
+                          await _submitRegistration();
                         },
                         child: Text(
                           "Cadastrar",
@@ -541,33 +557,43 @@ class _CadastrarState extends State<Cadastrar> {
     );
   }
 
-  testeCadastrar() {
+  // --- FUNÇÃO PARA SUBMETER O CADASTRO (LÓGICA DE UI) ---
+  // Esta função agora apenas valida o formulário e chama a ação no controller.
+  // A requisição HTTP real será movida para o controller (e suas camadas de dados).
+  Future<void> _submitRegistration() async {
     if (_formKey.currentState!.validate()) {
-      print('=== DADOS DO FORMULÁRIO (SEM MÁSCARA) ===');
-      print('Nome: ${controller.nome}');
-      print('CPF: ${controller.cpfSemMascara}');
-      print('CNS: ${controller.cnsSemMascara}');
-      print('Data Nascimento: ${controller.dataNascimento}');
-      print('Gênero: ${controller.genero}');
-      print('Email: ${controller.email}');
-      print('Telefone: ${controller.telefoneSemMascara}');
-      print('CEP: ${controller.cepSemMascara}');
-      print('Endereço: ${controller.ruaController.text}, ${controller.numero}');
-      print('Complemento: ${controller.complemento}');
-      print('Bairro: ${controller.bairroController.text}');
-      print('Cidade: ${controller.cidadeController.text}');
-      print('UF: ${controller.ufController.text}');
-      print('LGPD: ${controller.lgpd}');
-      print('Comunicações: ${controller.comunicacao}');
+      try {
+        // Chamada da ação de cadastro do controller
+        // ESTA AÇÃO `cadastrarUsuario()` PRECISA SER CRIADA NO RegisterController
+        await controller.cadastrarUsuario();
 
-      // Se todas as validações passarem
-      print('Dados válidos, pronto para enviar!');
-
-      // lógica para mostrar a tela de co
-      Navigator.pop(context);
-
-      // Aqui você pode chamar o método para enviar os dados para a API
-      // enviarParaAPI();
+        // Feedback de sucesso na UI
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Cadastro realizado com sucesso!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        // Navegação de sucesso
+        Navigator.pop(context);
+      } on AppExceptions catch (e) {
+        // Captura e exibe mensagens de erro customizadas vindas do controller/camadas de dados
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message),
+            backgroundColor: e is NetworkException ? Colors.orange : Colors.red, // Cores diferentes para tipos de erro
+          ),
+        );
+      } catch (e) {
+        // Captura qualquer outro erro inesperado não tratado
+        print('Erro inesperado: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Ocorreu um erro inesperado: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 }
