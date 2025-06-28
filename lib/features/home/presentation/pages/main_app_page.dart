@@ -15,7 +15,7 @@ import 'package:agenda_sus/features/home/presentation/pages/home_page.dart';
 import 'package:agenda_sus/features/home/presentation/pages/sus_card_page.dart';
 import 'package:agenda_sus/features/home/presentation/pages/perfil.dart'; // Import da tela de Perfil refatorada
 
-import 'package:agenda_sus/screens/agendar.dart'; // Assumindo que ainda está aqui
+import 'package:agenda_sus/features/home/presentation/pages/agendar_page.dart'; // Assumindo que ainda está aqui
 import 'package:agenda_sus/screens/consultas.dart'; // Assumindo que ainda está aqui
 
 import 'package:agenda_sus/shared/utils/colors.dart';
@@ -43,7 +43,7 @@ class _MainAppPageState extends State<MainAppPage> {
     telas = [
       const HomePage(),
       const Consultas(), // Assumindo que Consultas não precisa de 'usuario'
-      const Agendar(),   // Assumindo que Agendar não precisa de 'usuario'
+      const AgendarPage(),   // Assumindo que Agendar não precisa de 'usuario'
       const SusCardPage(),
       Perfil(usuario: widget.usuario), // Certifique-se de passar o UserModel
     ];

@@ -6,7 +6,7 @@ class DioClient {
   DioClient()
       : dio = Dio(
           BaseOptions(
-            baseUrl: 'http://192.168.100.70:8080/api',
+            baseUrl: 'http://192.168.100.76:8080/api',
             connectTimeout: const Duration(seconds: 15),
             receiveTimeout: const Duration(seconds: 15),
             sendTimeout: const Duration(seconds: 15),
