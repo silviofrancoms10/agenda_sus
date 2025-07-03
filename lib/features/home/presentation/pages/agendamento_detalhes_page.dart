@@ -1,16 +1,15 @@
 // Caminho: lib/features/home/presentation/pages/agendamento_detalhes_page.dart
 
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart'; // Para Observer
-import 'package:provider/provider.dart'; // Para Provider
+// import 'package:intl/intl.dart'; // Removido, pois não usaremos mais DateFormat para a seleção do paciente
 
+// Importe suas classes de cores e widgets compartilhados
 import 'package:agenda_sus/shared/utils/colors.dart';
 import 'package:agenda_sus/shared/widgets/campo_texto.dart';
 
+// Importe os modelos de dados relacionados ao agendamento
 import 'package:agenda_sus/features/agendamento/data/models/especialidade.dart';
-import 'package:agenda_sus/features/agendamento/data/models/consulta_model.dart';
-import 'package:agenda_sus/features/agendamento/presentation/controllers/agendamento_controller.dart'; // Importe o controller
-import 'package:agenda_sus/features/auth/presentation/controllers/login_controller.dart'; // Para pegar o ID do usuário logado
+import 'package:agenda_sus/features/agendamento/data/models/consulta_model.dart'; // Contém PreferenciaHorario e StatusConsulta
 
 class AgendamentoDetalhesPage extends StatefulWidget {
   final Especialidade especialidade;
@@ -27,6 +26,7 @@ class _AgendamentoDetalhesPageState extends State<AgendamentoDetalhesPage> {
   String? _descricao;
   PreferenciaHorario? _preferenciaHorario;
 
+  // Lista fake de unidades de saúde
   final List<String> _unidadesSaude = [
     'UBS 26 de Agosto',
     'UBS Coronel Antonino',
@@ -35,77 +35,41 @@ class _AgendamentoDetalhesPageState extends State<AgendamentoDetalhesPage> {
     'UBS Universitário',
   ];
 
-  late AgendamentoController _agendamentoController; // Controller de agendamento
-  late LoginController _loginController; // Controller de login para pegar o ID do usuário
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _agendamentoController = Provider.of<AgendamentoController>(context);
-    _loginController = Provider.of<LoginController>(context); // Obtém o LoginController
-  }
-
   @override
   void dispose() {
-    // MobX reactions (se houver) seriam descartadas aqui.
     super.dispose();
   }
 
-  void _solicitarConsulta() async {
-    FocusScope.of(context).unfocus(); // Esconde o teclado
-
+  void _agendarConsulta() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      // **IMPORTANTE:** Obtenha o ID do paciente logado
-      final int? pacienteId = _loginController.usuarioAtual?.id; 
-      if (pacienteId == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Erro: ID do paciente não disponível. Por favor, faça login novamente.'),
-            backgroundColor: Colors.red,
-            duration: Duration(seconds: 4),
-          ),
-        );
-        return;
-      }
+      final DateTime dataHoraAtualParaBackend = DateTime.now(); // Placeholder
 
-      // dataHoraConsulta é um placeholder. No backend, este campo não será usado na criação inicial.
-      // Ele é necessário no ConsultaModel porque o modelo de dados o exige.
       final novaConsulta = ConsultaModel(
         especialidade: widget.especialidade,
         descricao: _descricao,
         localAtendimento: _localAtendimentoSelecionado!,
-        dataHoraConsulta: DateTime.now(), // Placeholder
+        dataHoraConsulta: dataHoraAtualParaBackend,
         preferenciaHorario: _preferenciaHorario,
       );
 
-      // Chama a ação no AgendamentoController para enviar a solicitação
-      await _agendamentoController.solicitarConsulta(pacienteId, novaConsulta);
+      print('--- Requisição de Consulta a ser enviada ---');
+      print('Especialidade: ${novaConsulta.especialidade.descricao}');
+      print('Descrição: ${novaConsulta.descricao ?? "Não informada"}');
+      print('Local de Atendimento Solicitado: ${novaConsulta.localAtendimento}');
+      print('Preferência de Horário: ${novaConsulta.preferenciaHorario?.descricao ?? "Não informada"}');
+      print('Payload JSON para o Backend: ${novaConsulta.toJson()}');
 
-      // Verifica o resultado após a execução no controller
-      if (mounted) { // Garante que o widget ainda está na árvore
-        if (_agendamentoController.errorMessage != null) {
-          // Exibe a mensagem de erro que veio do controller
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(_agendamentoController.errorMessage!),
-              backgroundColor: Colors.red,
-              duration: const Duration(seconds: 5),
-            ),
-          );
-        } else {
-          // Sucesso
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Sua requisição de consulta de ${widget.especialidade.descricao} para "${novaConsulta.localAtendimento}" foi enviada com sucesso! Aguarde a confirmação.'),
-              backgroundColor: Colors.green,
-              duration: const Duration(seconds: 5),
-            ),
-          );
-          Navigator.pop(context); // Volta para a tela anterior (AgendarPage)
-        }
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Sua requisição de consulta de ${widget.especialidade.descricao} para "${novaConsulta.localAtendimento}" foi enviada! Aguarde a confirmação.'),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 4),
+        ),
+      );
+
+      Navigator.pop(context);
     }
   }
 
@@ -123,14 +87,15 @@ class _AgendamentoDetalhesPageState extends State<AgendamentoDetalhesPage> {
       backgroundColor: vistaBlue,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: Column( // Alterado para Column para colocar o container de aviso acima do Form
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // **NOVO CONTAINER DE AVISO**
             Container(
               padding: const EdgeInsets.all(12.0),
-              margin: const EdgeInsets.only(bottom: 20.0),
+              margin: const EdgeInsets.only(bottom: 20.0), // Espaçamento abaixo do container
               decoration: BoxDecoration(
-                color: whiteSmoke,
+                color: whiteSmoke, // Um tom suave de amarelo para aviso
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.amber.shade400, width: 1),
                 boxShadow: [
@@ -177,8 +142,9 @@ class _AgendamentoDetalhesPageState extends State<AgendamentoDetalhesPage> {
                 ],
               ),
             ),
+            // **FIM DO NOVO CONTAINER DE AVISO**
 
-            Form(
+            Form( // O formulário de agendamento
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -306,35 +272,25 @@ class _AgendamentoDetalhesPageState extends State<AgendamentoDetalhesPage> {
                   ),
                   const SizedBox(height: 48),
 
-                  Observer( // Usa Observer para reagir a _agendamentoController.isLoading
-                    builder: (_) {
-                      return ElevatedButton(
-                        // Desabilita o botão enquanto isLoading for true
-                        onPressed: _agendamentoController.isLoading ? null : _solicitarConsulta,
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(marianBlue),
-                          padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 15)),
-                          shape: WidgetStateProperty.all(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
+                  ElevatedButton(
+                    onPressed: _agendarConsulta,
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(marianBlue),
+                      padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 15)),
+                      shape: WidgetStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        child: _agendamentoController.isLoading
-                            ? const CircularProgressIndicator( // Mostra um spinner enquanto carrega
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                strokeWidth: 2,
-                              )
-                            : Text(
-                                'Enviar Solicitação',
-                                style: TextStyle(
-                                  color: whiteSmoke,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                      );
-                    },
+                      ),
+                    ),
+                    child: Text(
+                      'Enviar Solicitação',
+                      style: TextStyle(
+                        color: whiteSmoke,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),

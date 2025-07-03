@@ -3,12 +3,10 @@ import 'package:agenda_sus/shared/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-// --- ATENÇÃO AQUI: Importe 'Especialidade' de 'consulta_model.dart' ---
-// REMOVIDO: import 'package:agenda_sus/features/agendamento/data/models/especialidade.dart';
-// AGORA: Especialidade está definida dentro de consulta_model.dart
-import 'package:agenda_sus/features/agendamento/data/models/consulta_model.dart'; // Este arquivo agora contém Especialidade
+// Importe a enumeração Especialidade para passar o tipo de serviço para a próxima tela
+import 'package:agenda_sus/features/agendamento/data/models/especialidade.dart';
 
-// Este import para AgendamentoDetalhesPage já estava correto em 'home/presentation/pages'
+// Este import já estava correto para o novo local da AgendamentoDetalhesPage
 import 'package:agenda_sus/features/home/presentation/pages/agendamento_detalhes_page.dart';
 
 
@@ -23,57 +21,51 @@ class _AgendarPageState extends State<AgendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: vistaBlue, // Cor de fundo do Scaffold
-      body: SafeArea( // Garante que o conteúdo não invada a barra de status
+      backgroundColor: vistaBlue,
+      body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Alinha o conteúdo à esquerda
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // --- Seção do Título "Agendar Consulta" com estilo de contorno ---
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 40, 16, 0), // Padding no título
-              child: Stack( // Permite sobrepor texto para o efeito de contorno
+              padding: const EdgeInsets.fromLTRB(16, 40, 16, 0),
+              child: Stack(
                 children: [
-                  // Texto com contorno (preto semi-transparente)
                   Text(
                     "Agendar Consulta",
                     style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
                       foreground: Paint()
-                        ..style = PaintingStyle.stroke // Estilo de traço
-                        ..strokeWidth = 3 // Largura do contorno
-                        ..color = jetBlack, // Cor do contorno
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 3
+                        ..color = jetBlack,
                     ),
                   ),
-                  // Texto principal (branco fumaça)
                   Text(
                     "Agendar Consulta",
                     style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
-                      color: whiteSmoke, // Cor do texto principal
+                      color: whiteSmoke,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 32), // Espaço entre o título e os botões
+            const SizedBox(height: 32),
 
-            // --- Seção dos Botões de Especialidade ---
-            Expanded( // Permite que a área dos botões ocupe o espaço restante verticalmente
+            Expanded(
               child: Container(
-                // Ocupa a largura total
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end, // Alinha os botões ao final do espaço disponível
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row( // Primeira linha de botões
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Distribui os botões uniformemente
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         BotaoPersonalizado(
                           texto: "MÉDICO",
                           icone: FontAwesomeIcons.userDoctor,
                           onPressed: () {
-                            // Navega para a tela de detalhes, passando a Especialidade.medico
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -86,7 +78,6 @@ class _AgendarPageState extends State<AgendarPage> {
                           texto: "ENFERMEIRO",
                           icone: FontAwesomeIcons.userNurse,
                           onPressed: () {
-                            // Navega para a tela de detalhes, passando a Especialidade.enfermeiro
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -97,15 +88,14 @@ class _AgendarPageState extends State<AgendarPage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16), // Espaço entre as linhas de botões
-                    Row( // Segunda linha de botões
+                    const SizedBox(height: 16),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         BotaoPersonalizado(
                           texto: "DENTISTA",
                           icone: FontAwesomeIcons.tooth,
                           onPressed: () {
-                            // Navega para a tela de detalhes, passando a Especialidade.dentista
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -118,7 +108,6 @@ class _AgendarPageState extends State<AgendarPage> {
                           texto: "EXAMES",
                           icone: FontAwesomeIcons.vial,
                           onPressed: () {
-                            // Navega para a tela de detalhes, passando a Especialidade.exames
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -129,7 +118,7 @@ class _AgendarPageState extends State<AgendarPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 32,) // Espaço na parte inferior dos botões
+                    SizedBox(height: 32,)
                   ],
                 ),
               ),
